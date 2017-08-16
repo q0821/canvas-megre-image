@@ -189,6 +189,7 @@ export default {
       userImage.src = file.target.result
     },
     getOrientation: function (file, callback) {
+      // 獲得上傳照片的EXIF方向
       var reader = new FileReader()
       reader.onload = function (e) {
         var view = new DataView(e.target.result)
@@ -220,6 +221,7 @@ export default {
       reader.readAsArrayBuffer(file)
     },
     touchmoveMethod: function (e) {
+      // 點擊移動
       console.log('touchmove')
       // console.log(e)
       this.userImageTranslateX = this.userImageTranslateX + e.deltaX / 24
@@ -227,42 +229,36 @@ export default {
       document.getElementById('userImage').style.transform = 'translate(' + this.userImageTranslateX + 'px,' + this.userImageTranslateY + 'px) scale(' + this.userImageScale + ') rotate(' + this.userImageRotate + 'deg)'
     },
     pinchmoveMethod: function (e) {
+      // 縮放
       // console.log(e)
       this.userImageScale = e.scale
       document.getElementById('userImage').style.transform = 'translate(' + this.userImageTranslateX + 'px,' + this.userImageTranslateY + 'px) scale(' + this.userImageScale + ') rotate(' + this.userImageRotate + 'deg)'
     },
-    scaleMethod: function (e) {
-      console.log(e)
-      this.userImageScale = e
-      document.getElementById('userImage').style.transform = 'translate(' + this.userImageTranslateX + 'px,' + this.userImageTranslateY + 'px) scale(' + this.userImageScale + ') rotate(' + this.userImageRotate + 'deg)'
-    },
-    rotateMethod: function (e) {
-      console.log(e)
-      this.userImageRotate = e
-      document.getElementById('userImage').style.transform = 'translate(' + this.userImageTranslateX + 'px,' + this.userImageTranslateY + 'px) scale(' + this.userImageScale + ') rotate(' + this.userImageRotate + 'deg)'
-    },
     rotatemoveMethod: function (e) {
+      // 旋轉圖片
       console.log(e)
       this.userImageRotate = this.userImageRotate + e.rotation
       document.getElementById('userImage').style.transform = 'translate(' + this.userImageTranslateX + 'px,' + this.userImageTranslateY + 'px) scale(' + this.userImageScale + ') rotate(' + this.userImageRotate + 'deg)'
     },
     makeImageMethod: function (e) {
+      // 開始合成照片
       this.making = true
-      console.log(this.making)
-      console.log(document.getElementById('preview').clientWidth)
-      console.log(this.userImageScale)
+      // console.log(this.making)
+      // console.log(document.getElementById('preview').clientWidth)
+      // console.log(this.userImageScale)
       var scale = 1000 / document.getElementById('preview').clientWidth
       var w = document.getElementById('userImage').clientWidth * scale * this.userImageScale
       var h = document.getElementById('userImage').clientHeight * scale * this.userImageScale
       var x = this.userImageTranslateX * scale
       var y = this.userImageTranslateY * scale
-      console.log(w)
-      console.log(h)
-      console.log(x)
-      console.log(y)
+      // console.log(w)
+      // console.log(h)
+      // console.log(x)
+      // console.log(y)
       this.createImage(x, y, w, h)
     },
     createImage: function (x, y, w, h) {
+      // 建立合成照片
       var userImage = new Image()
       userImage.src = this.userImage
       var coverImage = new Image()
@@ -313,6 +309,7 @@ export default {
       this.making = true
     },
     reset: function () {
+      // 重置資料
       this.userImage = ''
       this.coverImage = ''
       this.userImageRotate = 0
