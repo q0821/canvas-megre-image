@@ -8,6 +8,7 @@ yarn-error.log*
 test/unit/coverage
 test/e2e/reports
 selenium-debug.log
+sftp-config.json
 
 # Editor directories and files
 .idea
