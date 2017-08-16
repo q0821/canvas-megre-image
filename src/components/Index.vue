@@ -7,7 +7,7 @@
       <p class="text-center">請選擇要套用的圖框</p>
       <label v-for="n in 5">
         <input type="radio" name="optionsRadios"  v-bind:id="'optionsRadios' + n"  v-bind:value="'option'+ n " v-model="option" >
-        <img :src="'../static/'+ $route.params.room +'/'+ n +'.png'" v-on:click="changeCover">
+        <img :src="'./static/'+ $route.params.room +'/'+ n +'.png'" v-on:click="changeCover">
         <!-- <img src='../static/01/1.png'> -->
       </label>
     </div>
@@ -370,6 +370,7 @@ a {
   top: 0;
   left: 0;
   transform-origin: 0 0;
+  transition-duration: 0s;
 }
 #coverimage{
   display: block;
