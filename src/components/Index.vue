@@ -41,13 +41,19 @@
     <transition name="fade">
       <div v-if="uploading" id="uploading">圖片讀取中，請稍後...</div>
     </transition>
+    <transition name="fade">
+      <div v-if="making" id="making">圖片合成中，請稍後...</div>
+    </transition>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 var VueTouch = require('vue-touch')
 Vue.use(VueTouch, {name: 'v-touch'})
+Vue.use(VueAxios, axios)
 
 export default {
   name: 'index',
@@ -243,22 +249,23 @@ export default {
     makeImageMethod: function (e) {
       // 開始合成照片
       this.making = true
-      // console.log(this.making)
-      // console.log(document.getElementById('preview').clientWidth)
-      // console.log(this.userImageScale)
-      var scale = 1000 / document.getElementById('preview').clientWidth
-      var w = document.getElementById('userImage').clientWidth * scale * this.userImageScale
-      var h = document.getElementById('userImage').clientHeight * scale * this.userImageScale
-      var x = this.userImageTranslateX * scale
-      var y = this.userImageTranslateY * scale
-      // console.log(w)
-      // console.log(h)
-      // console.log(x)
-      // console.log(y)
-      this.createImage(x, y, w, h)
+      var vm = this
+      Vue.nextTick(function () {
+        var scale = 1000 / document.getElementById('preview').clientWidth
+        var w = document.getElementById('userImage').clientWidth * scale * vm.userImageScale
+        var h = document.getElementById('userImage').clientHeight * scale * vm.userImageScale
+        var x = vm.userImageTranslateX * scale
+        var y = vm.userImageTranslateY * scale
+        // console.log(w)
+        // console.log(h)
+        // console.log(x)
+        // console.log(y)
+        vm.createImage(x, y, w, h)
+      })
     },
     createImage: function (x, y, w, h) {
       // 建立合成照片
+      var vm = this
       var userImage = new Image()
       userImage.src = this.userImage
       var coverImage = new Image()
@@ -306,7 +313,23 @@ export default {
       )
       var base64 = resizeCanvas.toDataURL('image/png')
       this.outputImage = base64
-      this.making = true
+
+      // var img = document.getElementById('output')
+      const formData = new FormData()
+
+      formData.append('data', base64)
+      formData.append('room', this.$route.params.room)
+      axios.post('http://hellojoomla.tw/canvas/receive.php', formData)
+      .then(function (res) {
+        console.log(res.status)
+        // console.log(document.querySelector('.output img'))
+        // success(res.data)
+        vm.making = false
+      })
+      .catch(function (err) {
+        console.log('err')
+        console.log(err)
+      })
     },
     reset: function () {
       // 重置資料
