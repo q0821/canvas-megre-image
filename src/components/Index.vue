@@ -319,7 +319,7 @@ export default {
 
       formData.append('data', base64)
       formData.append('room', this.$route.params.room)
-      axios.post('http://hellojoomla.tw/canvas/receive.php', formData)
+      axios.post('./receive.php', formData)
       .then(function (res) {
         console.log(res.status)
         // console.log(document.querySelector('.output img'))
